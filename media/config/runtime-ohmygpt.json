@@ -1,0 +1,478 @@
+{
+  "version": 1,
+  "providers": {
+    "openai_transit": {
+      "api_key_env": "MEDIA_OPENAI_TRANSIT_API_KEY",
+      "base_url_env": "MEDIA_OPENAI_TRANSIT_BASE_URL"
+    },
+    "deepseek": {
+      "api_key_env": "MEDIA_DEEPSEEK_API_KEY",
+      "base_url_env": "MEDIA_DEEPSEEK_BASE_URL"
+    },
+    "mimo": {
+      "api_key_env": "MEDIA_MIMO_API_KEY",
+      "base_url_env": "MEDIA_MIMO_BASE_URL"
+    },
+    "commandcode": {
+      "api_key_env": "MEDIA_COMMANDCODE_API_KEY",
+      "base_url_env": "MEDIA_COMMANDCODE_BASE_URL"
+    },
+    "ohmygpt_images": {
+      "api_key_env": "MEDIA_IMAGE_API_KEY",
+      "base_url_env": "MEDIA_IMAGE_BASE_URL"
+    },
+    "openai_official": {
+      "api_key_env": "MEDIA_CHAT_API_KEY",
+      "base_url_env": "MEDIA_CHAT_BASE_URL"
+    }
+  },
+  "models": {
+    "chat": [
+      {
+        "id": "deepseek/deepseek-v4.1-flash",
+        "label": "DeepSeek 4.1 Flash",
+        "provider": "commandcode",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": true,
+        "thinking_modes": [
+          "off",
+          "low"
+        ],
+        "thinking_mode_parameters": {
+          "off": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "reasoning_effort": "off"
+          },
+          "low": {
+            "thinking": {
+              "type": "enabled",
+              "budget_tokens": 1024
+            },
+            "reasoning_effort": "low"
+          }
+        },
+        "request_parameters": {
+          "temperature": 0.6,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4.1-flash-fast",
+        "label": "DeepSeek 4.1 Flash Fast",
+        "provider": "commandcode",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": false,
+        "thinking_modes": [
+          "off"
+        ],
+        "thinking_mode_parameters": {
+          "off": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "reasoning_effort": "off"
+          }
+        },
+        "request_parameters": {
+          "temperature": 0.6,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "deepseek-flash",
+        "label": "DeepSeek Flash",
+        "provider": "deepseek",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": false,
+        "thinking_modes": [
+          "off",
+          "low",
+          "high",
+          "max"
+        ],
+        "thinking_mode_parameters": {
+          "off": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "low": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "low"
+          },
+          "high": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "high"
+          },
+          "max": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "max"
+          }
+        },
+        "request_parameters": {
+          "temperature": 0.6
+        }
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek V4 Pro",
+        "provider": "deepseek",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": false,
+        "thinking_modes": [
+          "off",
+          "low",
+          "high",
+          "max"
+        ],
+        "thinking_mode_parameters": {
+          "off": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "low": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "low"
+          },
+          "high": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "high"
+          },
+          "max": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "max"
+          }
+        },
+        "request_parameters": {
+          "temperature": 0.6
+        }
+      },
+      {
+        "id": "deepseek-chat",
+        "label": "DeepSeek Chat (legacy alias)",
+        "provider": "deepseek",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": false,
+        "thinking_modes": [
+          "off"
+        ],
+        "thinking_mode_parameters": {
+          "off": {
+            "thinking": {
+              "type": "disabled"
+            }
+          }
+        },
+        "request_parameters": {
+          "temperature": 0.6
+        }
+      },
+      {
+        "id": "mimo-v2.5",
+        "label": "MiMo v2.5",
+        "provider": "mimo",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": false,
+        "thinking_modes": [],
+        "request_parameters": {
+          "temperature": 0.6
+        }
+      },
+      {
+        "id": "gpt-6-luna",
+        "label": "GPT-6 Luna",
+        "provider": "openai_official",
+        "enabled": true,
+        "available": true,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": true,
+        "thinking_modes": [
+          "low"
+        ],
+        "thinking_mode_parameters": {
+          "low": {
+            "reasoning_effort": "low"
+          }
+        },
+        "request_parameters": {
+          "max_completion_tokens": 4096
+        }
+      }
+    ],
+    "image": [
+      {
+        "id": "gpt-image-2",
+        "label": "GPT Image 2",
+        "provider": "ohmygpt_images",
+        "api_protocol": "ohmygpt_images_polling",
+        "enabled": true,
+        "available": true,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "supports_vision": true,
+        "qualities": [
+          "low"
+        ],
+        "aspect_ratios": [
+          "1:1",
+          "9:16",
+          "2:3",
+          "3:4",
+          "16:9",
+          "3:2",
+          "4:3"
+        ],
+        "size_constraints": {
+          "multiple_of": 16,
+          "min_pixels": 655360,
+          "max_pixels": 8294400,
+          "max_edge": 3840,
+          "max_edge_inclusive": false,
+          "max_aspect_ratio": "3:1"
+        },
+        "size_by_aspect_ratio": {
+          "1:1": "1024x1024",
+          "9:16": "864x1536",
+          "2:3": "1024x1536",
+          "3:4": "768x1024",
+          "16:9": "1536x864",
+          "3:2": "1536x1024",
+          "4:3": "1024x768"
+        },
+        "request_parameters": {
+          "generations": {},
+          "edits": {}
+        },
+        "quality_map": {
+          "standard": "medium"
+        }
+      },
+      {
+        "id": "gpt-image-2.5-flare",
+        "partial_streaming": {
+          "enabled": false,
+          "partial_images": 2
+        },
+        "label": "GPT Image 2.5 Flare",
+        "provider": "ohmygpt_images",
+        "api_protocol": "openai_images_v1",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "capabilities_documented": true,
+        "supports_vision": true,
+        "qualities": [
+          "low"
+        ],
+        "aspect_ratios": [
+          "1:1",
+          "9:16",
+          "2:3",
+          "3:4",
+          "16:9",
+          "3:2",
+          "4:3"
+        ],
+        "size_constraints": {
+          "multiple_of": 16,
+          "min_pixels": 655360,
+          "max_pixels": 8294400,
+          "max_edge": 3840,
+          "max_edge_inclusive": true,
+          "max_aspect_ratio": "3:1"
+        },
+        "size_by_aspect_ratio": {
+          "1:1": "1024x1024",
+          "9:16": "864x1536",
+          "2:3": "1024x1536",
+          "3:4": "768x1024",
+          "16:9": "1536x864",
+          "3:2": "1536x1024",
+          "4:3": "1024x768"
+        },
+        "request_parameters": {
+          "generations": {},
+          "edits": {}
+        }
+      },
+      {
+        "id": "gpt-image-2.5-sunburst",
+        "label": "GPT Image 2.5 Sunburst",
+        "provider": "openai_transit",
+        "api_protocol": "openai_images_v1",
+        "enabled": false,
+        "available": false,
+        "verified": false,
+        "availability_reason": "operator_configuration_required",
+        "capabilities_documented": true,
+        "supports_vision": true,
+        "qualities": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "auto"
+        ],
+        "aspect_ratios": [
+          "1:1",
+          "9:16",
+          "2:3",
+          "3:4",
+          "16:9",
+          "3:2",
+          "4:3"
+        ],
+        "size_constraints": {
+          "multiple_of": 16,
+          "min_pixels": 655360,
+          "max_pixels": 8294400,
+          "max_edge": 3840,
+          "max_edge_inclusive": true,
+          "max_aspect_ratio": "3:1"
+        },
+        "size_by_aspect_ratio": {
+          "1:1": "1024x1024",
+          "9:16": "864x1536",
+          "2:3": "1024x1536",
+          "3:4": "768x1024",
+          "16:9": "1536x864",
+          "3:2": "1536x1024",
+          "4:3": "1024x768"
+        },
+        "request_parameters": {
+          "generations": {},
+          "edits": {}
+        }
+      }
+    ]
+  },
+  "defaults": {
+    "chat_model": "gpt-6-luna",
+    "image_model": "gpt-image-2",
+    "quality": "low",
+    "aspect_ratio": "1:1",
+    "thinking_mode": "low",
+    "storage_policy": "background_cos",
+    "synchronous_storage_policy": "cos"
+  },
+  "request": {
+    "timeout_seconds": 180,
+    "total_budget_seconds": 540,
+    "max_retries": 2,
+    "retry_http_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retry_backoff_seconds": [
+      2,
+      4
+    ],
+    "retry_transport_errors": false,
+    "reference_image_max_bytes": 20971520,
+    "reference_image_max_pixels": 40000000,
+    "reference_image_max_edge": 4096,
+    "reference_image_timeout_seconds": 30,
+    "task_poll_interval_ms": 300,
+    "chat_timeout_seconds": 90,
+    "chat_total_budget_seconds": 180,
+    "chat_max_input_chars": 12000,
+    "chat_max_output_chars": 32000,
+    "chat_max_sse_event_bytes": 262144,
+    "image_provider_poll_interval_seconds": 2
+  },
+  "image_jobs": {
+    "workers": 2,
+    "queue_capacity": 4,
+    "active_jobs_limit": 100,
+    "max_prompt_chars": 8000,
+    "poll_timeout_seconds": 240,
+    "storage_workers": 1,
+    "storage_queue_capacity": 4,
+    "result_max_bytes": 20971520,
+    "result_retention_seconds": 86400,
+    "storage_timeout_seconds": 60
+  },
+  "reference_image": {
+    "preserve_frame": true,
+    "max_edge": 2048
+  },
+  "storage_policies": {
+    "cos": {
+      "enabled": true,
+      "result_prefix": "creations",
+      "reference_prefix": "references"
+    },
+    "background_cos": {
+      "enabled": true,
+      "result_prefix": "creations"
+    },
+    "direct": {
+      "enabled": true
+    }
+  },
+  "option_labels": {
+    "quality": {
+      "auto": "自动",
+      "low": "快速草稿",
+      "standard": "标准",
+      "medium": "进阶",
+      "high": "高清",
+      "xhigh": "超高清",
+      "max": "极致"
+    },
+    "storage_policy": {
+      "direct": "仅本次预览",
+      "cos": "立即存作品库",
+      "background_cos": "先出图·后台保存"
+    },
+    "thinking_mode": {
+      "off": "不思考",
+      "low": "轻度思考",
+      "high": "深入思考",
+      "max": "极限思考"
+    },
+    "status": {
+      "unverified": "未实测",
+      "unavailable": "不可用"
+    }
+  }
+}

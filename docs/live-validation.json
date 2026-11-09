@@ -1,0 +1,57 @@
+{
+  "provider": "api.openai.com",
+  "model_list_gets": 1,
+  "provider_posts": [
+    {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/v1/images/generations",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/v1/images/edits",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "steps": [
+    {
+      "name": "proposal",
+      "status": 200,
+      "card": true,
+      "model": "gpt-6-luna"
+    },
+    {
+      "name": "generated",
+      "status": "success",
+      "phase": "completed",
+      "model": "gpt-image-2",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "bytes": 1347661,
+      "download_status": 200,
+      "idempotency_verified": true
+    },
+    {
+      "name": "edited",
+      "status": "success",
+      "phase": "completed",
+      "model": "gpt-image-2",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "bytes": 1291765,
+      "download_status": 200,
+      "idempotency_verified": true
+    }
+  ],
+  "history_artworks": 2,
+  "completed": true
+}

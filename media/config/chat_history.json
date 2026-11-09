@@ -1,0 +1,5 @@
+{
+  "history_context_limit": 10,
+  "visual_context_turn_limit": 10,
+  "session_list_limit": 100
+}

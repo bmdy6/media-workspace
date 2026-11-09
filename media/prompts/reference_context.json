@@ -1,0 +1,6 @@
+{
+  "base_vision": "【修改底图】：当前输入包含用户明确选择要继续修改的上一张作品。若用户要求调整，应基于该图提出修改并标记 is_modification = true。",
+  "base_non_vision": "【修改底图链接】：用户明确选择要继续修改的图片为 {current_image_url}，本轮模型没有看到图片内容。只有结合用户文字才能判断修改方向；不得声称已观察图片细节。若用户要求修改，应标记 is_modification = true。",
+  "reference_vision": "【用户参考图】：当前输入包含用户主动上传的参考图。它用于人物身份、主体、产品或风格参考，不等于修改上一张作品。即使 is_modification = false，也必须保留这张参考图作为本轮生图视觉输入。",
+  "reference_non_vision": "【用户参考图链接】：用户主动上传的参考图为 {current_image_url}，本轮模型没有看到图片内容。不得声称已观察图像细节；它仍是本轮生图的显式参考输入，不等于修改底图，也不要求 is_modification = true。"
+}

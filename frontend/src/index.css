@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ai-worklog-detail-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-width: 760px;
+  max-height: min(88dvh, 900px);
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+  color: inherit;
+  box-shadow: 0 24px 80px rgb(15 23 42 / 22%);
+  overflow: hidden;
+}
+
+.ai-worklog-detail-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-worklog-detail-dialog::backdrop {
+  background: rgb(15 23 42 / 36%);
+  backdrop-filter: blur(3px);
+}
+
+@media (max-width: 680px) {
+  .ai-worklog-detail-dialog {
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: 90dvh;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 主题机制：CSS 变量。default 黑白；hello-kitty 预留 */
+:root {
+  --color-primary: #111111;
+  --color-primary-contrast: #ffffff;
+}
+
+html[data-theme='hello-kitty'] {
+  --color-primary: #ff9ec4;
+  --color-primary-contrast: #ffffff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-neutral-50 text-neutral-900 antialiased;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Segoe UI', Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* —— 全局组件规范（UI 评审 v1）—— */
+@layer components {
+  /* 卡片：白底 + 轻阴影，不用边框 */
+  .card {
+    @apply rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)];
+  }
+  /* 输入框：h-11 / 16px 防 iOS 聚焦缩放 */
+  .input {
+    @apply h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 transition-colors;
+  }
+  /* 主按钮 */
+  .btn-primary {
+    @apply inline-flex h-11 items-center justify-center gap-1 rounded-lg bg-neutral-900 px-4 text-sm font-medium text-white transition active:scale-[0.98];
+  }
+  /* 次按钮 */
+  .btn-secondary {
+    @apply inline-flex h-11 items-center justify-center gap-1 rounded-lg border border-neutral-200 bg-white px-4 text-sm text-neutral-700 transition active:bg-neutral-50;
+  }
+  /* 小按钮（列表内） */
+  .btn-sm {
+    @apply inline-flex h-7 items-center justify-center gap-1 rounded-md px-2.5 text-xs transition active:scale-[0.96];
+  }
+  /* 标签 chip（展示型） */
+  .tag {
+    @apply rounded-md bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600;
+  }
+  /* 页面标题 */
+  .page-title {
+    @apply text-[22px] font-semibold tracking-tight text-neutral-900 md:text-2xl;
+  }
+  .page-sub {
+    @apply mt-1 text-[13px] text-neutral-500;
+  }
+  /* 列表容器（divide 式） */
+  /* 展示主卡：与首页同一语言（白底细边框、灰绿强调） */
+  .stat-card {
+    @apply rounded-2xl border bg-white p-4;
+    border-color: var(--wb-line);
+  }
+  .stat-label {
+    @apply text-xs;
+    color: var(--wb-muted);
+  }
+  .stat-value {
+    @apply text-3xl font-semibold leading-none tracking-tight tabular-nums;
+  }
+  .stat-track {
+    @apply h-1.5 overflow-hidden rounded-full;
+    background: #ecede8;
+  }
+  .list-card {
+    @apply card divide-y divide-neutral-100 overflow-hidden;
+  }
+  .list-row {
+    @apply flex items-center gap-3 px-4 py-3 transition-colors active:bg-neutral-50;
+  }
+  /* 家庭任务（家长看弟弟的提交并确认）：复用列表条视觉，不引第二套样式 */
+  .thumb {
+    @apply h-10 w-10 shrink-0 rounded-lg bg-neutral-100 object-cover;
+  }
+}
+
+/* iOS Safari 聚焦小于 16px 的输入框会把整页放大。.input 本身已是 text-base，
+   但调用点常叠 text-sm 覆盖它；这里收口，一处保证所有输入控件 16px。 */
+input.input,
+textarea.input,
+select.input {
+  font-size: 16px;
+}
+
+/* 选择器统一 pill 样式：去原生箭头，自绘 chevron（单处收口，全局生效） */
+select.input {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.125rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  cursor: pointer;
+}
+
+/* Workout: use original free-exercise-db photos edge-to-edge. */
+.workout-photo-motion {
+  background: #171717;
+}
+
+.workout-photo-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation-duration: 2.2s;
+  animation-timing-function: steps(1, end);
+  animation-iteration-count: infinite;
+}
+
+.workout-photo-frame-0 { animation-name: workout-photo-frame-0; }
+.workout-photo-frame-1 { animation-name: workout-photo-frame-1; }
+
+@keyframes workout-photo-frame-0 {
+  0%, 49.9% { opacity: 1; }
+  50%, 99.9% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes workout-photo-frame-1 {
+  0%, 49.9% { opacity: 0; }
+  50%, 99.9% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workout-photo-frame { animation: none; opacity: 0; }
+  .workout-photo-frame-0 { opacity: 1; }
+}
+
+
+/* Knowledge reader: Yuque-like calm reading surface; Markdown stays the source of truth. */
+.knowledge-article { color: rgb(64 64 64); font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
+.knowledge-article h1 { margin: 0 0 1.5rem; color: rgb(23 23 23); font-size: 1.75rem; font-weight: 650; line-height: 1.3; letter-spacing: -0.025em; }
+.knowledge-article h2 { margin: 2.25rem 0 .8rem; color: rgb(38 38 38); font-size: 1.3rem; font-weight: 650; line-height: 1.45; }
+.knowledge-article h3 { margin: 1.75rem 0 .65rem; color: rgb(38 38 38); font-size: 1.08rem; font-weight: 650; }
+.knowledge-article p, .knowledge-article ul, .knowledge-article ol, .knowledge-article blockquote { margin: .85rem 0; }
+.knowledge-article ul, .knowledge-article ol { padding-left: 1.35rem; }
+.knowledge-article ul { list-style: disc; } .knowledge-article ol { list-style: decimal; }
+.knowledge-article a { color: rgb(23 23 23); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.knowledge-article blockquote { border-left: 3px solid rgb(229 229 229); padding-left: 1rem; color: rgb(115 115 115); }
+.knowledge-article code { border-radius: .35rem; background: rgb(245 245 244); padding: .12rem .3rem; font-size: .88em; }
+.knowledge-article pre { margin: 1rem 0; max-width: 100%; overflow-x: auto; border: 1px solid rgb(231 229 228); border-radius: .9rem; background: rgb(248 247 245); padding: .9rem 1rem; color: rgb(68 64 60); font-size: .88rem; line-height: 1.65; }
+.knowledge-article pre code { background: transparent; padding: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.knowledge-article table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+.knowledge-article th, .knowledge-article td { border: 1px solid rgb(229 229 229); padding: .55rem .7rem; text-align: left; vertical-align: top; }
+.knowledge-article th { background: rgb(250 250 249); font-weight: 600; }
+.knowledge-article img { display: block; max-width: 100%; height: auto; margin: 1.25rem auto; border-radius: .75rem; }
+.knowledge-image-missing { display: block; margin: 1rem 0; border: 1px dashed rgb(214 211 209); border-radius: .75rem; padding: .75rem 1rem; color: rgb(168 162 158); font-size: .8rem; }
+.knowledge-article h4, .knowledge-article h5 { margin: 1.4rem 0 .55rem; color: rgb(64 64 64); font-weight: 650; }
+.knowledge-article hr { margin: 2rem 0; border-color: rgb(229 229 229); }
+.knowledge-ai-worklog li.task-list-item { color: rgb(37 99 235); }
+.knowledge-ai-worklog li.task-list-item a { color: rgb(37 99 235); }
+.knowledge-ai-worklog li.task-list-item input[type="checkbox"] { accent-color: rgb(37 99 235); }
