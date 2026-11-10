@@ -2,6 +2,12 @@
 
 一个可以自行部署的 AI 生图网页：先把想法聊成方案，按需绑定参考图，明确确认后生成；结果可以下载、回看，并接着上一张图继续修改。
 
+<p align="center">
+  <img src="docs/images/desktop.png" width="360" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
+</p>
+
+_以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实模型生成的样图，本次截图未调用模型。_
+
 沿用 React + FastAPI + SQLite，包含完整前后端。它与 [image-mcp](https://github.com/bmdy6/image-mcp) 面向同一个创作方向：这里提供网页交互，image-mcp 提供 Agent 工具入口。两者独立运行，不共享线上后端；本仓不提供托管演示服务。
 
 ## 可以做什么
@@ -13,6 +19,18 @@
 - 可选实时语音输入、录音暂停/继续/取消，以及保留原文的文字整理。
 
 新参考图上传需要配置腾讯云 COS。默认本地模式可以文生图，并在本地原图有效期内继续修改；默认原图保留 24 小时，请及时下载。历史记录不等于永久保留原图。需要长期图片存储时启用 COS 转存，详见 [配置与部署](docs/configuration.md)。
+
+### 从方案到结果，再接着改图
+
+先核对方案，明确确认后再提交图片任务。
+
+![方案确认：本地合成方案卡](docs/images/proposal.png)
+
+结果可以下载，也可以点击「基于此图改」，继续讨论新的修改方案。
+
+![继续修改：保留底图，确认橙色修改方案](docs/images/edit.png)
+
+![修改结果：橙色茶壶样图](docs/images/result.png)
 
 ## 本地安装
 
@@ -51,7 +69,7 @@ uvicorn media.web.backend.main:app --host 127.0.0.1 --port 8000 --workers 1
 python scripts/synthetic_demo.py
 ```
 
-打开 `http://127.0.0.1:8765`，使用 `demo` / `synthetic-demo-password`。此入口只监听本机，使用临时 SQLite、合成图片和内存 COS 替身，阻断外部 HTTP 请求，退出会清理临时数据。它用于检查流程，不代表真实模型效果，也不能作为生产启动入口。
+打开 `http://127.0.0.1:8765`，使用 `demo` / `synthetic-demo-password`。此入口只监听本机，使用临时 SQLite、此前真实模型生成的茶壶样图和内存 COS 替身，阻断外部 HTTP 请求，退出会清理临时数据。对话与任务由本地合成服务驱动，图片直接读取 `docs/assets/live-generated.png` 与 `live-edited.png`，不调用模型。它用于检查流程，不能作为生产启动入口。
 
 前端开发可在另一个终端运行 `npm --prefix frontend run dev`；Vite 将 `/api` 转发至本机 8000，将语音 WebSocket 转发至本机 18766。语音配置与边界见 [语音说明](docs/voice.md)。
 
