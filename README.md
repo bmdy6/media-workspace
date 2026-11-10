@@ -2,9 +2,11 @@
 
 一个可以自行部署的 AI 生图网页：先把想法聊成方案，按需绑定参考图，明确确认后生成；结果可以下载、回看，并接着上一张图继续修改。
 
-![Media Workspace 桌面界面：合成图片结果与继续修改](docs/images/desktop.png)
+<p align="center">
+  <img src="docs/images/desktop.png" width="360" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
+</p>
 
-_以下界面均来自本机合成演示，不代表真实模型效果。_
+_以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实模型生成的样图，本次截图未调用模型。_
 
 沿用 React + FastAPI + SQLite，包含完整前后端。它与 [image-mcp](https://github.com/bmdy6/image-mcp) 面向同一个创作方向：这里提供网页交互，image-mcp 提供 Agent 工具入口。两者独立运行，不共享线上后端；本仓不提供托管演示服务。
 
@@ -28,7 +30,7 @@ _以下界面均来自本机合成演示，不代表真实模型效果。_
 
 ![继续修改：保留底图，确认橙色修改方案](docs/images/edit.png)
 
-![修改结果：本地合成橙色构图](docs/images/result.png)
+![修改结果：橙色茶壶样图](docs/images/result.png)
 
 ## 本地安装
 
@@ -67,7 +69,7 @@ uvicorn media.web.backend.main:app --host 127.0.0.1 --port 8000 --workers 1
 python scripts/synthetic_demo.py
 ```
 
-打开 `http://127.0.0.1:8765`，使用 `demo` / `synthetic-demo-password`。此入口只监听本机，使用临时 SQLite、合成图片和内存 COS 替身，阻断外部 HTTP 请求，退出会清理临时数据。它用于检查流程，不代表真实模型效果，也不能作为生产启动入口。
+打开 `http://127.0.0.1:8765`，使用 `demo` / `synthetic-demo-password`。此入口只监听本机，使用临时 SQLite、此前真实模型生成的茶壶样图和内存 COS 替身，阻断外部 HTTP 请求，退出会清理临时数据。对话与任务由本地合成服务驱动，图片直接读取 `docs/assets/live-generated.png` 与 `live-edited.png`，不调用模型。它用于检查流程，不能作为生产启动入口。
 
 前端开发可在另一个终端运行 `npm --prefix frontend run dev`；Vite 将 `/api` 转发至本机 8000，将语音 WebSocket 转发至本机 18766。语音配置与边界见 [语音说明](docs/voice.md)。
 

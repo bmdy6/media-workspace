@@ -2,11 +2,11 @@
 
 Run from the source checkout with: python scripts/synthetic_demo.py
 Use demo / synthetic-demo-password. Temporary data is removed on exit.
-This is an integration fixture, not evidence of real image generation.
+Replies and jobs are synthetic; image bytes replay earlier real-model teapot samples.
+No model is called during this demo.
 """
 from __future__ import annotations
 
-import io
 import json
 import os
 from pathlib import Path
@@ -23,7 +23,6 @@ os.environ["MEDIA_USE_MYSQL"] = "0"
 os.environ["SECRET_KEY"] = secrets.token_urlsafe(48)
 os.environ["MEDIA_CORS_ORIGINS"] = "http://127.0.0.1:8765"
 
-from PIL import Image, ImageDraw
 from fastapi.responses import Response
 import httpx
 import requests
@@ -42,15 +41,7 @@ _calls = {"chat": 0, "image": 0, "with_reference": 0, "storage": 0}
 _object_prefix = "http://127.0.0.1:8765/demo/objects/"
 
 
-def fixture_png(color: str) -> bytes:
-    image = Image.new("RGB", (1024, 1024), "#f6f0e7")
-    draw = ImageDraw.Draw(image)
-    draw.rounded_rectangle((180, 230, 840, 800), radius=80, fill=color)
-    draw.ellipse((350, 320, 675, 645), fill="#fff7e9")
-    draw.text((370, 690), "SYNTHETIC DEMO", fill="white")
-    output = io.BytesIO()
-    image.save(output, format="PNG")
-    return output.getvalue()
+_sample_dir = Path(__file__).resolve().parents[1] / "docs" / "assets"
 
 
 def upload(data, filename, **kwargs):
@@ -64,11 +55,11 @@ def stream_reply(messages, *, model_id, **kwargs):
     _calls["chat"] += 1
     serialized = json.dumps(messages, ensure_ascii=False)
     modification = "橙色" in serialized
-    card = {"title": "橙色构图修改方案" if modification else "蓝色几何构图",
-            "design_rationale": "保留中心构图，并在确认后生成。此回复来自本地合成测试。",
-            "prompt": "橙色几何构图，浅色背景" if modification else "蓝色几何构图，浅色背景",
+    card = {"title": "橙色陶瓷茶壶修改方案" if modification else "蓝色陶瓷茶壶",
+            "design_rationale": "保留茶壶造型、浅米色背景与柔和侧光。确认后展示此前真实模型生成的茶壶样图；本地演示不调用模型。",
+            "prompt": "将蓝色陶瓷茶壶改为橙色，保留造型、浅米色背景与柔和侧光" if modification else "蓝色釉面陶瓷茶壶，浅米色背景，柔和侧光，产品摄影",
             "style": "default", "aspect_ratio": "1:1", "is_modification": modification,
-            "reference_recommended": not modification, "reference_reason": "可以绑定参考图辅助构图"}
+            "reference_recommended": False, "reference_reason": ""}
     reply = "这是本地合成方案。请检查提示词，再明确确认生成。\n```json\n" + json.dumps({"card": card}, ensure_ascii=False) + "\n```"
     for index in range(0, len(reply), 24):
         time.sleep(.02)
@@ -81,7 +72,8 @@ def generate(**kwargs):
     if kwargs.get("ref_bytes") or kwargs.get("ref_image_bytes"):
         _calls["with_reference"] += 1
     time.sleep(.8)
-    return ProviderImageResult(fixture_png("#d47835" if _calls["image"] > 1 else "#4263b8"), None, kwargs.get("model_id") or "gpt-image-2")
+    sample = "live-edited.png" if "橙色" in kwargs.get("final_prompt", "") else "live-generated.png"
+    return ProviderImageResult((_sample_dir / sample).read_bytes(), None, kwargs.get("model_id") or "gpt-image-2")
 
 
 def no_network(*args, **kwargs):
