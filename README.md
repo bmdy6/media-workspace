@@ -1,3 +1,5 @@
+[简体中文](README.md) | [English](README.en.md)
+
 # Media Workspace
 
 一个可以自行部署的 AI 生图网页：先把想法聊成方案，按需绑定参考图，明确确认后生成；结果可以下载、回看，并接着上一张图继续修改。
