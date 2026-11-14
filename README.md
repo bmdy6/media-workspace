@@ -2,17 +2,49 @@
 
 # Media Workspace
 
-一个可以自行部署的 AI 生图网页：先把想法聊成方案，按需绑定参考图，明确确认后生成；结果可以下载、回看，并接着上一张图继续修改。
+可自行部署的 AI 生图网页，确认方案后生成。
 
 <p align="center">
-  <img src="docs/images/desktop.png" width="360" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
+  <img src="docs/images/desktop.png" width="260" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
 </p>
 
-_以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实模型生成的样图，本次截图未调用模型。_
+_以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实模型生成的样图，拍摄截图时未调用模型。_
+
+## 本地安装
+
+需要 Python 3.10+、Node.js 20.19+ 或 22.12+，运行平台为 Linux/macOS（图片任务的进程锁使用 `fcntl`）。
+
+```bash
+git clone https://github.com/bmdy6/media-workspace.git
+cd media-workspace
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -e '.[test]'
+npm --prefix frontend ci
+npm --prefix frontend run build
+```
+
+将 [.env.example](.env.example) 中需要的变量显式导出到启动进程。应用不会自动加载 `.env`。至少设置：
+
+```bash
+export MEDIA_DATA_DIR="$PWD/data"
+export SECRET_KEY="$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')"
+export MEDIA_CHAT_BASE_URL="https://api.openai.com/v1"
+export MEDIA_IMAGE_BASE_URL="https://api.openai.com/v1"
+# 从自己的安全配置中注入 MEDIA_CHAT_API_KEY 和 MEDIA_IMAGE_API_KEY；勿提交到 Git。
+python -m media.cli admin create admin
+uvicorn media.web.backend.main:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+创建管理员时会隐藏输入密码。打开 `http://127.0.0.1:8000`，使用该账号登录。`SECRET_KEY` 需至少 32 字符；正式部署应生成一次并持久保存，重启不要更换。新密码至少 6 字符、最多 72 个 UTF-8 字节。`python -m media.cli invite create` 可以创建一次性邀请码。
+
+默认对话模型 `gpt-6-luna`、图片模型 `gpt-image-2`，使用官方 Chat Completions / Images 接口；默认图片为 1:1、low。模型权限以自己的账号为准。修改模型或使用 OhMyGPT 时，需要按 [配置说明](docs/configuration.md) 同时配置模型、参数和协议，不只是替换 URL。
+
+## 可以做什么
 
 沿用 React + FastAPI + SQLite，包含完整前后端。它与 [image-mcp](https://github.com/bmdy6/image-mcp) 面向同一个创作方向：这里提供网页交互，image-mcp 提供 Agent 工具入口。两者独立运行，不共享线上后端；本仓不提供托管演示服务。
 
-## 可以做什么
+先把想法聊成方案，按需绑定参考图，明确确认后生成；结果可以下载、回看，并接着上一张图继续修改。
 
 - 对话流与方案卡：区分讨论和实际生图，确认前不会提交图片请求。
 - 参考图上传、方案卡绑定和移除；上传进度、取消、失败后重试保留。
@@ -33,36 +65,6 @@ _以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实�
 ![继续修改：保留底图，确认橙色修改方案](docs/images/edit.png)
 
 ![修改结果：橙色茶壶样图](docs/images/result.png)
-
-## 本地安装
-
-需要 Python 3.10+、Node.js 20.19+ 或 22.12+，运行平台为 Linux/macOS（图片任务的进程锁使用 `fcntl`）。
-
-```bash
-git clone https://github.com/bmdy6/media-workspace.git
-cd media-workspace
-python3 -m venv .venv
-. .venv/bin/activate
-pip install -e '.[test]'
-npm --prefix frontend ci
-npm --prefix frontend run build
-```
-
-将 [.env.example](.env.example) 中需要的变量显式导出到启动进程。应用不会自动加载 `.env`，也不会查找宿主机的密钥仓库、工作台账号或其他项目配置。至少设置：
-
-```bash
-export MEDIA_DATA_DIR="$PWD/data"
-export SECRET_KEY="$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')"
-export MEDIA_CHAT_BASE_URL="https://api.openai.com/v1"
-export MEDIA_IMAGE_BASE_URL="https://api.openai.com/v1"
-# 从自己的安全配置中注入 MEDIA_CHAT_API_KEY 和 MEDIA_IMAGE_API_KEY；勿提交到 Git。
-python -m media.cli admin create admin
-uvicorn media.web.backend.main:app --host 127.0.0.1 --port 8000 --workers 1
-```
-
-创建管理员时会隐藏输入密码。打开 `http://127.0.0.1:8000`，使用该账号登录。`SECRET_KEY` 需至少 32 字符；正式部署应生成一次并持久保存，重启不要更换。新密码至少 6 字符、最多 72 个 UTF-8 字节。`python -m media.cli invite create` 可以创建一次性邀请码。
-
-默认对话模型 `gpt-6-luna`、图片模型 `gpt-image-2`，使用官方 Chat Completions / Images 接口；默认图片为 1:1、low。模型权限以自己的账号为准。修改模型或使用 OhMyGPT 时，需要按 [配置说明](docs/configuration.md) 同时配置模型、参数和协议，不只是替换 URL。
 
 ## 不调用模型的体验与开发
 
