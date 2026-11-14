@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> 本项目已合并进 [Visionary](https://github.com/bmdy6/visionary)（网页 + AI 助手 + MCP，共用积分），这里不再维护，仓库已归档。
+
 [简体中文](README.md) | [English](README.en.md)
 
 # Media Workspace

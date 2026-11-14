@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This project has been merged into [Visionary](https://github.com/bmdy6/visionary) (web app + AI assistant + MCP with shared credits). This repository is archived and no longer maintained.
+
 [简体中文](README.md) | [English](README.en.md)
 
 # Media Workspace
