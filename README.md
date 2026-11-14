@@ -5,7 +5,7 @@
 可自行部署的 AI 生图网页，确认方案后生成。
 
 <p align="center">
-  <img src="docs/images/desktop.png" width="260" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
+  <img src="docs/images/desktop.png" width="360" alt="Media Workspace 桌面界面：对话、蓝色茶壶样图与操作按钮">
 </p>
 
 _以下界面来自本地合成演示；蓝色和橙色茶壶图是此前真实模型生成的样图，拍摄截图时未调用模型。_
